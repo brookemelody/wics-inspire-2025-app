@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { Alert, TextInput, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
+import { MedicationEntry } from "../lib/medicationEntry";
 
-function addMedicationEntry(medicationName: string) {
-    // TODO
+function addMedicationEntry(medicationName: string, amount: number,) {
+    // Create a new instance of the MedicationEntry Object and pass the parameters entered by the user
+    // TODO: Add form to get frequency + other parameters, current placeholder for frequency is 0
+    const entry = new MedicationEntry(medicationName, 0, amount);
+
+    // TODO: Add the entry to a list that stores instances of MedicationEntry Objects
 
     // Alert the user that the medication entry was successfully added to their schedule
     Alert.alert('Success', `Added medication entry ${medicationName} to your schedule!`);
@@ -36,7 +41,7 @@ export default function Tab() {
                 <TextInput onChangeText={onChangeMedicationName} value={medicationName} placeholder="Name of medication"/>
             </View>
             <TouchableOpacity style={styles.addButton} onPress={() => {
-                addMedicationEntry(medicationName);
+                addMedicationEntry(medicationName, numberPills);
             }}>
                 <Text style={styles.addButtonText}>Add Medication Entry</Text>
             </TouchableOpacity>
