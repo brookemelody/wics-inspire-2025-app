@@ -2,13 +2,16 @@ import { useState } from "react";
 import { Alert, TextInput, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import { MedicationEntry } from "../lib/medicationEntry";
+import { UserSchedule } from "../lib/userSchedule";
 
 function addMedicationEntry(medicationName: string, amount: number,) {
     // Create a new instance of the MedicationEntry Object and pass the parameters entered by the user
     // TODO: Add form to get frequency + other parameters, current placeholder for frequency is 0
     const entry = new MedicationEntry(medicationName, 0, amount);
 
-    // TODO: Add the entry to a list that stores instances of MedicationEntry Objects
+    // Add the medication entry to the user's medication schedule
+    let schedule = UserSchedule.getUserSchedule();
+    schedule.addEntryToSchedule(entry);
 
     // Alert the user that the medication entry was successfully added to their schedule
     Alert.alert('Success', `Added medication entry ${medicationName} to your schedule!`);
