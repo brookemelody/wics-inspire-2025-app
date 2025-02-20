@@ -1,20 +1,29 @@
 import { useState } from "react";
 import { Alert, TextInput, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
-import { MedicationEntry } from "../lib/medicationEntry";
-import { UserSchedule } from "../lib/userSchedule";
+import MedicationEntry from "../lib/medicationEntry";
+import UserSchedule from "../lib/userSchedule";
 
 function addMedicationEntry(medicationName: string, amount: number,) {
-    // Create a new instance of the MedicationEntry Object and pass the parameters entered by the user
-    // TODO: Add form to get frequency + other parameters, current placeholder for frequency is 0
-    const entry = new MedicationEntry(medicationName, 0, amount);
+    try {
+        // Create a new instance of the MedicationEntry Object and pass the parameters entered by the user
+        // TODO: Add form to get frequency + other parameters, current placeholder for frequency is 0
+        const entry = new MedicationEntry(medicationName, 0, amount);
 
-    // Add the medication entry to the user's medication schedule
-    let schedule = UserSchedule.getUserSchedule();
-    schedule.addEntryToSchedule(entry);
+        // Add the medication entry to the user's medication schedule
+        let schedule = UserSchedule.getUserSchedule();
+        schedule.addEntryToSchedule(entry);
 
-    // Alert the user that the medication entry was successfully added to their schedule
-    Alert.alert('Success', `Added medication entry ${medicationName} to your schedule!`);
+        // Alert the user that the medication entry was successfully added to their schedule
+        Alert.alert('Success', `Added medication entry ${medicationName} to your schedule!`);
+    } catch (error) {
+        // Debugging
+        console.log(error);
+
+        // Alert the user that the values that they entered into the form are invalid, so this medication entry could not be added to their schedule
+        Alert.alert('Failure', 'Could not add this medication entry to your schedule. Please check that you entered all of the information correctly')
+    }
+    
 }
 
 // See official documentation for how to use Expo tab router here: https://docs.expo.dev/router/advanced/tabs/

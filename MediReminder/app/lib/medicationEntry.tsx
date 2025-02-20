@@ -1,7 +1,8 @@
-export class MedicationEntry {
+export default class MedicationEntry {
     // Instance variables
     private _name: string;
     private _frequency: number;
+    // private _days: string[];
     private _amount: number;
 
     // Constructor
