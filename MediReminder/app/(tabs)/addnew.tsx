@@ -16,10 +16,9 @@ function addMedicationEntry(medicationName: string, amount: number,) {
 
         // Alert the user that the medication entry was successfully added to their schedule
         Alert.alert('Success', `Added medication entry ${medicationName} to your schedule!`);
-    } catch (error) {
-        // Debugging
-        console.log(error);
 
+        console.log(schedule.entryList);
+    } catch (error) {
         // Alert the user that the values that they entered into the form are invalid, so this medication entry could not be added to their schedule
         Alert.alert('Failure', 'Could not add this medication entry to your schedule. Please check that you entered all of the information correctly')
     }

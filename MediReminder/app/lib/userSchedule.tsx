@@ -8,11 +8,11 @@ export default class UserSchedule {
 
     // Instance variables
     private static schedule: UserSchedule;
-    private entryList: MedicationEntry[];
+    private _entryList: MedicationEntry[];
 
     // Constructor
     private constructor(entryList: MedicationEntry[]) {
-        this.entryList = entryList;
+        this._entryList = entryList;
     }
 
     // Class methods
@@ -25,11 +25,15 @@ export default class UserSchedule {
     }
 
     public addEntryToSchedule(entry: MedicationEntry) {
-        this.entryList.push(entry);
+        this._entryList.push(entry);
     }
 
     public removeEntryFromSchedule(entry: MedicationEntry) {
-        let editedEntryList = this.entryList.filter(currEntry => currEntry != entry);
-        this.entryList = editedEntryList;
+        let editedEntryList = this._entryList.filter(currEntry => currEntry != entry);
+        this._entryList = editedEntryList;
+    }
+
+    public get entryList(): MedicationEntry[] {
+        return this._entryList;
     }
 }
