@@ -12,11 +12,15 @@ export default function HomeScreen() {
   // If the schedule contains 0 entries, the home screen should display a special message indicating that the schedule is empty
   let entryListComponents;
   if (entryList.length == 0) {
-    entryListComponents = "Your schedule is currently empty"
+    entryListComponents = <Text>Your schedule is currently empty</Text>
   }
   // Otherwise, list all of the entries in the schedule's entry list
   else {
-    entryListComponents = entryList.map((entry) => `${entry.name}: ${entry.amount}\n`)
+    entryListComponents = entryList.map((entry) => 
+    <View key={entry.id}>
+      <Text>{entry.name}: {entry.amount}</Text>
+      <TouchableOpacity onPress={() => UserSchedule.getUserSchedule().removeEntryFromSchedule(entry)}><Text>Delete {entry.id}</Text></TouchableOpacity>
+  </View>)
   }
 
   // Function to toggle the refresh state
@@ -27,7 +31,8 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       {entryList.length == 0 ? "" : <Text>Current Schedule contains {entryList.length} entries</Text>}
-      <Text>{entryListComponents}</Text>
+      {/* Note to self: TouchableOpacity components will not be interactable with if it is made the child element of a React Native Text component*/}
+      <View>{entryListComponents}</View>
       {/* Button to manually refresh the page, need to figure out how to make this a relatively less tedious process (i.e. scroll up and hold to reload page) instead */}
       <TouchableOpacity onPress={handleRefresh}><Text>Refresh</Text></TouchableOpacity>
     </View>

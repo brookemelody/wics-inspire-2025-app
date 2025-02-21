@@ -20,7 +20,6 @@ function addMedicationEntry(medicationName: string, amount: number,) {
         // Alert the user that the values that they entered into the form are invalid, so this medication entry could not be added to their schedule
         Alert.alert('Failure', 'Could not add this medication entry to your schedule. Please check that you entered all of the information correctly')
     }
-    
 }
 
 // See official documentation for how to use Expo tab router here: https://docs.expo.dev/router/advanced/tabs/

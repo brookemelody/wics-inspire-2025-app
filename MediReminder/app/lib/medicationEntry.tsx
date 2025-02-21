@@ -1,5 +1,8 @@
+import UserSchedule from "./userSchedule";
+
 export default class MedicationEntry {
     // Instance variables
+    private _id: number;
     private _name: string;
     private _frequency: number;
     // private _days: string[];
@@ -7,12 +10,29 @@ export default class MedicationEntry {
 
     // Constructor
     constructor(name: string, frequency: number, amount: number) {
+        this._id = UserSchedule.getUserSchedule().nextId;
+        UserSchedule.getUserSchedule().nextId++;
+        
         this._name = name;
         this._frequency = frequency;
         this._amount = amount;
     }
 
     // Class methods
+    public get id() {
+        return this._id;
+    }
+
+    public set id(id: number) {
+        // Validate the id
+        /* id should be an integer, TypeScript doesn't have a distinct integer type
+        and only has the number type so id needs to validated as an integer here */
+        if (!Number.isInteger(id)) {
+            throw new Error("Invalid id, id must be an integer");
+        }
+        this._id = id;
+    }
+
     public get name() {
         return this._name;
     }

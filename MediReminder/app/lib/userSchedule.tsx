@@ -7,15 +7,34 @@ export default class UserSchedule {
     the single instance */
 
     // Instance variables
+    /**
+     * The single instance of the UserSchedule class, a static variable to follow the Singleton Design Pattern
+     */
     private static schedule: UserSchedule;
+    /**
+     * An Array containing instances of the MedicationEntry class, this design implements composition
+     */
     private _entryList: MedicationEntry[];
+    /**
+     * An integer representing the id that the next entry added to the entry list should have
+     */
+    private _nextId: number;
 
     // Constructor
     private constructor(entryList: MedicationEntry[]) {
         this._entryList = entryList;
+        this._nextId = 0;
     }
 
     // Class methods
+    public get nextId() {
+        return this._nextId;
+    }
+
+    public set nextId(nextId: number) {
+        this._nextId = nextId;
+    }
+
     public static getUserSchedule(): UserSchedule {
         if (UserSchedule.schedule === undefined) {
             let initialEntryList: MedicationEntry[] = new Array();
@@ -31,6 +50,7 @@ export default class UserSchedule {
     public removeEntryFromSchedule(entry: MedicationEntry) {
         let editedEntryList = this._entryList.filter(currEntry => currEntry != entry);
         this._entryList = editedEntryList;
+        this._nextId--;
     }
 
     public get entryList(): MedicationEntry[] {
