@@ -1,8 +1,15 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import UserSchedule from '../lib/userSchedule';
 
 export default function HomeScreen() {
+  // React Native hook to get the current focus state of the screen,
+  // the HomeScreen component needs to be re-rendered whenever it is in focus
+  // so that the information displayed on the screen is updated whenever the user switches screens
+  // when they added a new entry in the Add New screen
+  const isFocused = useIsFocused();
+
   // Use the useState hook from React to handle updating the component when the schedule is changed
   // React will re-render a component whenever its state changes
   const [refresh, setRefresh] = useState(false);
@@ -31,13 +38,19 @@ export default function HomeScreen() {
     setRefresh(!refresh);
   }
 
+  // Call the handleRefresh function whenever the isFocused variable changes value
+  // so that the information displayed on the screen is updated whenever the user
+  // switches to the Home screen because the HomeScreen component was re-rendered
+  // due to state change
+  useEffect(() => {
+    handleRefresh();
+  }, [isFocused])
+
   return (
     <View style={styles.container}>
       {entryList.length == 0 ? "" : <Text>Current Schedule contains {entryList.length} entries</Text>}
       {/* Note to self: TouchableOpacity components will not be interactable with if it is made the child element of a React Native Text component*/}
       <View>{entryListComponents}</View>
-      {/* Button to manually refresh the page, need to figure out how to make this a relatively less tedious process (i.e. scroll up and hold to reload page) instead */}
-      <TouchableOpacity onPress={handleRefresh}><Text>Refresh</Text></TouchableOpacity>
     </View>
   )
 }

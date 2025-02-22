@@ -49,7 +49,12 @@ export default function Tab() {
                 <TextInput onChangeText={onChangeMedicationName} value={medicationName} placeholder="Name of medication"/>
             </View>
             <TouchableOpacity style={styles.addButton} onPress={() => {
+                // Call the respective function to add the entry to the schedule
                 addMedicationEntry(medicationName, numberPills);
+
+                // Reset the form fields
+                setNumberPills(0);
+                onChangeMedicationName("Name of medication");
             }}>
                 <Text style={styles.addButtonText}>Add Medication Entry</Text>
             </TouchableOpacity>
