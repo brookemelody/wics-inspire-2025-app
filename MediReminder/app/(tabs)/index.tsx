@@ -19,7 +19,10 @@ export default function HomeScreen() {
     entryListComponents = entryList.map((entry) => 
     <View key={entry.id}>
       <Text>{entry.name}: {entry.amount}</Text>
-      <TouchableOpacity onPress={() => UserSchedule.getUserSchedule().removeEntryFromSchedule(entry)}><Text>Delete {entry.id}</Text></TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        UserSchedule.getUserSchedule().removeEntryFromSchedule(entry);
+        handleRefresh();
+      }}><Text>Delete {entry.id}</Text></TouchableOpacity>
   </View>)
   }
 
