@@ -37,7 +37,7 @@ export default function TabLayout() {
         name="addnew"
         options={{
           title: 'Add New',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus.circle.fill" color={color} />,
         }}
       />
     </Tabs>
