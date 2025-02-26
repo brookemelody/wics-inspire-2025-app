@@ -26,6 +26,7 @@ export default function HomeScreen() {
     entryListComponents = entryList.map((entry) => 
     <View key={entry.id}>
       <Text>{entry.name}: {entry.amount}</Text>
+      <Text>{entry.getDaysAsStringArray().join(", ")}</Text>
       <TouchableOpacity onPress={() => {
         UserSchedule.getUserSchedule().removeEntryFromSchedule(entry);
         handleRefresh();

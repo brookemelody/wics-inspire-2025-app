@@ -5,17 +5,18 @@ export default class MedicationEntry {
     private _id: number;
     private _name: string;
     private _frequency: number;
-    // private _days: string[];
     private _amount: number;
+    private _days: boolean[];
 
     // Constructor
-    constructor(name: string, frequency: number, amount: number) {
+    constructor(name: string, frequency: number, amount: number, days: boolean[]) {
         this._id = UserSchedule.getUserSchedule().nextId;
         UserSchedule.getUserSchedule().nextId++;
         
         this._name = name;
         this._frequency = frequency;
         this._amount = amount;
+        this._days = days;
     }
 
     // Class methods
@@ -71,5 +72,25 @@ export default class MedicationEntry {
             throw new Error("Invalid amount, amount must be an integer");
         }
         this._amount = amount;
+    }
+
+    public get days() {
+        return this._days;
+    }
+
+    public set days(days: boolean[]) {
+        this._days = days;
+    }
+
+    public getDaysAsStringArray() {
+        let daysBool: boolean[] = this._days;
+        let daysString: String[] = [];
+        let stringsList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        for (let i = 0; i < daysBool.length; i++) {
+            if (daysBool[i]) {
+                daysString.push(stringsList[i]);
+            }
+        }
+        return daysString;
     }
 }

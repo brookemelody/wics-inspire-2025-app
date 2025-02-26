@@ -3,12 +3,13 @@ import { Alert, TextInput, TouchableOpacity } from "react-native";
 import { View, Text, StyleSheet } from "react-native";
 import MedicationEntry from "../lib/medicationEntry";
 import UserSchedule from "../lib/userSchedule";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
-function addMedicationEntry(medicationName: string, amount: number,) {
+function addMedicationEntry(medicationName: string, amount: number, daysToTake: boolean[]) {
     try {
         // Create a new instance of the MedicationEntry Object and pass the parameters entered by the user
         // TODO: Add form to get frequency + other parameters, current placeholder for frequency is 0
-        const entry = new MedicationEntry(medicationName, 0, amount);
+        const entry = new MedicationEntry(medicationName, 0, amount, daysToTake);
 
         // Add the medication entry to the user's medication schedule
         let schedule = UserSchedule.getUserSchedule();
@@ -26,6 +27,8 @@ function addMedicationEntry(medicationName: string, amount: number,) {
 export default function Tab() {
     const [numberPills, setNumberPills] = useState(0);
     const [medicationName, onChangeMedicationName] = useState('Name of medication');
+    // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+    const [daysToTake, setDaysToTake] = useState([false, false, false, false, false, false, false])
 
     return (
         <View style={styles.container}>
@@ -48,13 +51,104 @@ export default function Tab() {
             <View>
                 <TextInput onChangeText={onChangeMedicationName} value={medicationName} placeholder="Name of medication"/>
             </View>
+            <View>
+                {/* Selection for which day(s) of the week that the medication needs to be taken,
+                    this is a checkbox as opposed to a dropdown value since there needs to be
+                    the ability to select multiple values if necessary 
+                */}
+                <BouncyCheckbox text="Monday" style={styles.checkbox}  isChecked={daysToTake[0]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[0] = true;
+                        }
+                        else {
+                            newDaysToTake[0] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+                <BouncyCheckbox text="Tuesday" style={styles.checkbox} isChecked={daysToTake[1]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[1] = true;
+                        }
+                        else {
+                            newDaysToTake[1] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+                <BouncyCheckbox text="Wednesday" style={styles.checkbox} isChecked={daysToTake[2]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[2] = true;
+                        }
+                        else {
+                            newDaysToTake[2] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+                <BouncyCheckbox text="Thursday" style={styles.checkbox} isChecked={daysToTake[3]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[3] = true;
+                        }
+                        else {
+                            newDaysToTake[3] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+                <BouncyCheckbox text="Friday" style={styles.checkbox} isChecked={daysToTake[4]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[4] = true;
+                        }
+                        else {
+                            newDaysToTake[4] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+                <BouncyCheckbox text="Saturday" style={styles.checkbox} isChecked={daysToTake[5]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[5] = true;
+                        }
+                        else {
+                            newDaysToTake[5] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+                <BouncyCheckbox text="Sunday" style={styles.checkbox} isChecked={daysToTake[6]} onPress={(isChecked: boolean) => {
+                    setDaysToTake(oldDaysToTake => {
+                        const newDaysToTake = [...oldDaysToTake];
+                        if (isChecked) {
+                            newDaysToTake[6] = true;
+                        }
+                        else {
+                            newDaysToTake[6] = false;
+                        }
+                        return newDaysToTake;
+                    });
+                }}/>
+            </View>
             <TouchableOpacity style={styles.addButton} onPress={() => {
                 // Call the respective function to add the entry to the schedule
-                addMedicationEntry(medicationName, numberPills);
+                addMedicationEntry(medicationName, numberPills, daysToTake);
 
                 // Reset the form fields
                 setNumberPills(0);
                 onChangeMedicationName("Name of medication");
+                setDaysToTake([false, false, false, false, false, false, false]);
             }}>
                 <Text style={styles.addButtonText}>Add Medication Entry</Text>
             </TouchableOpacity>
@@ -102,5 +196,8 @@ const styles = StyleSheet.create({
         color: '#f0f0f0',
         fontWeight: 'bold',
         fontSize: 20,
+    },
+    checkbox: {
+        width: 150,
     }
 });
