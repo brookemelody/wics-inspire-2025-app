@@ -4,6 +4,9 @@ import { View, Text, StyleSheet } from "react-native";
 import MedicationEntry from "../lib/medicationEntry";
 import UserSchedule from "../lib/userSchedule";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { TimePickerModal } from "react-native-paper-dates";
+import React from "react";
+import { getHours, getMinutes } from "react-native-paper-dates/lib/typescript/Time/timeUtils";
 
 function addMedicationEntry(medicationName: string, amount: number, daysToTake: boolean[]) {
     try {
@@ -29,6 +32,25 @@ export default function Tab() {
     const [medicationName, onChangeMedicationName] = useState('Name of medication');
     // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
     const [daysToTake, setDaysToTake] = useState([false, false, false, false, false, false, false])
+    const [timePickerVisible, setTimePickerVisible] = useState(false);
+    let dateList : Date[] = new Array();
+    const [timesToTake, setTimesToTake] = useState(dateList);
+
+    const onDismiss = () => {
+        setTimePickerVisible(false);
+    }
+
+    const onConfirm = React.useCallback(({hours, minutes}) => {
+        setTimePickerVisible(false);
+
+        let time = new Date();
+        time.setHours(hours);
+        time.setMinutes(minutes);
+        dateList.push(time);
+
+        setTimesToTake(dateList);
+        console.log(dateList);
+    }, [setTimePickerVisible]);
 
     return (
         <View style={styles.container}>
@@ -140,6 +162,16 @@ export default function Tab() {
                         return newDaysToTake;
                     });
                 }}/>
+            </View>
+            <View>
+                <TouchableOpacity onPress={() => setTimePickerVisible(true)}><Text>Add Time</Text></TouchableOpacity>
+                <TimePickerModal
+                    visible={timePickerVisible}
+                    onDismiss={onDismiss}
+                    onConfirm={onConfirm}
+                    hours={12}
+                    minutes={0}
+                />
             </View>
             <TouchableOpacity style={styles.addButton} onPress={() => {
                 // Call the respective function to add the entry to the schedule

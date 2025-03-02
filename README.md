@@ -24,5 +24,6 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 - [Expo](https://expo.dev/)
 - [React Native](https://reactnative.dev/)
 
-   #### React Native Community Packages Used
+   #### Community Packages Used
    - [React Native Bouncy Checkbox](https://github.com/WrathChaos/react-native-bouncy-checkbox)
+   - [React Native Paper Dates](https://github.com/web-ridge/react-native-paper-dates)
