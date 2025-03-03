@@ -8,13 +8,15 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    node -v
    ```
 
-2. Install dependencies
+2. The **root folder** for this Expo project is ```wics-inspire-2025-app/MediReminder/```, you need to change directory to inside of this root folder to run commands such as installing the project's dependencies and starting the Expo app. The MediReminder folder is what contains the necessary files for these actions such as ```package.json``` and the ```/app/``` subdirectory.
+
+3. Install dependencies
 
    ```bash
    npm install
    ```
 
-3. Start the app
+4. Start the app
 
    ```bash
     npx expo start
