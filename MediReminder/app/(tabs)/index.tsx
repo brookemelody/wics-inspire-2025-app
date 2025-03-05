@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import UserSchedule from '../lib/userSchedule';
 
@@ -25,7 +25,9 @@ export default function HomeScreen() {
   else {
     entryListComponents = entryList.map((entry) => 
     <View key={entry.id}>
-      <Text>{entry.name}: {entry.amount}</Text>
+      <Text>{entry.name}</Text>
+      <Text>Amount to take: {entry.amount}</Text>
+      <Text>{entry.getTimesAsStringArray().join(", ")}</Text>
       <Text>{entry.getDaysAsStringArray().join(", ")}</Text>
       <TouchableOpacity onPress={() => {
         UserSchedule.getUserSchedule().removeEntryFromSchedule(entry);

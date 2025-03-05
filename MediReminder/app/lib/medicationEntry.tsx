@@ -1,3 +1,4 @@
+import Time from "./time";
 import UserSchedule from "./userSchedule";
 
 export default class MedicationEntry {
@@ -7,9 +8,10 @@ export default class MedicationEntry {
     private _frequency: number;
     private _amount: number;
     private _days: boolean[];
+    private _times: Time[];
 
     // Constructor
-    constructor(name: string, frequency: number, amount: number, days: boolean[]) {
+    constructor(name: string, frequency: number, amount: number, days: boolean[], times: Time[]) {
         this._id = UserSchedule.getUserSchedule().nextId;
         UserSchedule.getUserSchedule().nextId++;
         
@@ -17,6 +19,7 @@ export default class MedicationEntry {
         this._frequency = frequency;
         this._amount = amount;
         this._days = days;
+        this._times = times;
     }
 
     // Class methods
@@ -92,5 +95,23 @@ export default class MedicationEntry {
             }
         }
         return daysString;
+    }
+
+    public get times() {
+        return this._times;
+    }
+
+    public set times(times: Time[]) {
+        this._times = times;
+    }
+
+    public getTimesAsStringArray() {
+        let timesString: String[] = [];
+        for (const time of this._times) {
+            let PMStr = time.PM ? "PM" : "AM";
+            let timeStr = `${time.hour}:${String(time.minute).padStart(2, '0')} ${PMStr}`;
+            timesString.push(timeStr);
+        }
+        return timesString;
     }
 }

@@ -6,13 +6,13 @@ import UserSchedule from "../lib/userSchedule";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { TimePickerModal } from "react-native-paper-dates";
 import React from "react";
-import { getHours, getMinutes } from "react-native-paper-dates/lib/typescript/Time/timeUtils";
+import Time from "../lib/time";
 
-function addMedicationEntry(medicationName: string, amount: number, daysToTake: boolean[]) {
+function addMedicationEntry(medicationName: string, amount: number, daysToTake: boolean[], timesToTake: Time[]) {
     try {
         // Create a new instance of the MedicationEntry Object and pass the parameters entered by the user
         // TODO: Add form to get frequency + other parameters, current placeholder for frequency is 0
-        const entry = new MedicationEntry(medicationName, 0, amount, daysToTake);
+        const entry = new MedicationEntry(medicationName, 0, amount, daysToTake, timesToTake);
 
         // Add the medication entry to the user's medication schedule
         let schedule = UserSchedule.getUserSchedule();
@@ -26,6 +26,26 @@ function addMedicationEntry(medicationName: string, amount: number, daysToTake: 
     }
 }
 
+function convert24HourTimeTo12HourTime(hours: number, minutes: number) {
+    let convertedHours = hours;
+    let PM = false;
+    if (convertedHours > 12) {
+        convertedHours = hours - 12;
+    }
+    // Special case: 12:00 AM
+    if (convertedHours == 0) {
+        convertedHours = 12;
+    }
+    if (convertedHours >= 12) {
+        PM = true;
+    }
+
+    // Create a new instance of the Time class
+    let time = new Time(convertedHours, minutes, PM);
+    // Return the created Time instance
+    return time;
+}
+
 // See official documentation for how to use Expo tab router here: https://docs.expo.dev/router/advanced/tabs/
 export default function Tab() {
     const [numberPills, setNumberPills] = useState(0);
@@ -33,23 +53,24 @@ export default function Tab() {
     // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
     const [daysToTake, setDaysToTake] = useState([false, false, false, false, false, false, false])
     const [timePickerVisible, setTimePickerVisible] = useState(false);
-    let dateList : Date[] = new Array();
-    const [timesToTake, setTimesToTake] = useState(dateList);
+    const [timesToTake, setTimesToTake] = useState<Time[]>([]);
 
     const onDismiss = () => {
         setTimePickerVisible(false);
     }
 
+    // TODO: Type this callback, it is not a huge priority as the code can still run fine just how it is currently
     const onConfirm = React.useCallback(({hours, minutes}) => {
+        // Set the modal to be no longer visible
         setTimePickerVisible(false);
 
-        let time = new Date();
-        time.setHours(hours);
-        time.setMinutes(minutes);
-        dateList.push(time);
-
-        setTimesToTake(dateList);
-        console.log(dateList);
+        // Convert the time from 24-hour format to 12-hour format
+        let time = convert24HourTimeTo12HourTime(hours, minutes);
+        // Add the time to the timeList
+        setTimesToTake(oldTimesToTake => {
+            return [...oldTimesToTake, time];
+        });
+        
     }, [setTimePickerVisible]);
 
     return (
@@ -175,12 +196,13 @@ export default function Tab() {
             </View>
             <TouchableOpacity style={styles.addButton} onPress={() => {
                 // Call the respective function to add the entry to the schedule
-                addMedicationEntry(medicationName, numberPills, daysToTake);
+                addMedicationEntry(medicationName, numberPills, daysToTake, timesToTake);
 
                 // Reset the form fields
                 setNumberPills(0);
                 onChangeMedicationName("Name of medication");
                 setDaysToTake([false, false, false, false, false, false, false]);
+                setTimesToTake([]);
             }}>
                 <Text style={styles.addButtonText}>Add Medication Entry</Text>
             </TouchableOpacity>
